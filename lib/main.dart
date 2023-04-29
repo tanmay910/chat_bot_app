@@ -7,7 +7,6 @@ import 'providers/chats_provider.dart';
 import 'screens/chat_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/sign_up_screen.dart';
-import 'screens/splash.view.dart';
 
 void main() {
   runApp(const MyApp());
