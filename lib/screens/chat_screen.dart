@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:chatgpt_course/constants/constants.dart';
 import 'package:chatgpt_course/providers/chats_provider.dart';
 import 'package:chatgpt_course/services/services.dart';
@@ -21,10 +21,12 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool _isTyping = false;
-
+  bool _isListening = false;
   late TextEditingController textEditingController;
   late ScrollController _listScrollController;
   late FocusNode focusNode;
+  final speech = stt.SpeechToText();
+
   @override
   void initState() {
     _listScrollController = ScrollController();
@@ -110,6 +112,45 @@ class _ChatScreenState extends State<ChatScreen> {
                             hintText: "How can I help you",
                             hintStyle: TextStyle(color: Colors.grey)),
                       ),
+                    ),
+                    GestureDetector(
+                        onTapUp: (details) {
+                          speech.stop();
+                          setState(() {
+                            _isListening = false;
+                          });
+                        },
+                        onTapDown: (details) async {
+                          final isAvailable = await speech.initialize();
+                          if (isAvailable) {
+                            setState(() {
+                              _isListening = true;
+                            });
+                            await speech.listen(
+                              onResult: (result) {
+                                textEditingController.text =
+                                    result.recognizedWords;
+                              },
+                            );
+                          }
+                        },
+                        //  child:  Icon(Icons.mic,color: _isListening ? Colors.blue : Colors.white,)
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.mic,
+                              color: _isListening ? Colors.blue : Colors.white,
+                            ),
+                            if (_isListening)
+                              CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.blue),
+                              ),
+                          ],
+                        )),
+                    SizedBox(
+                      width: 10,
                     ),
                     IconButton(
                         onPressed: () async {
