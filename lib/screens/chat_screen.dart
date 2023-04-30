@@ -45,8 +45,6 @@ class _ChatScreenState extends State<ChatScreen> {
     focusNode.dispose();
     super.dispose();
   }
-
-  // List<ChatModel> chatList = [];
   @override
   Widget build(BuildContext context) {
     final modelsProvider = Provider.of<ModelsProvider>(context);
@@ -80,13 +78,13 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                   controller: _listScrollController,
-                  itemCount: chatProvider.getChatList.length, //chatList.length,
+                  itemCount: chatProvider.getChatList.length,
                   itemBuilder: (context, index) {
                     return ChatWidget(
                       msg: chatProvider
-                          .getChatList[index].msg, // chatList[index].msg,
+                          .getChatList[index].msg, 
                       chatIndex: chatProvider.getChatList[index]
-                          .chatIndex, //chatList[index].chatIndex,
+                          .chatIndex,
                       shouldAnimate:
                           chatProvider.getChatList.length - 1 == index,
                     );
