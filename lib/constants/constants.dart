@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
-Color scaffoldBackgroundColor = const Color(0xFF343541);
-Color cardColor = const Color(0xFF444654);
+Color scaffoldBackgroundColor = HexColor("#161621");
+Color cardColor = HexColor("#cdf0fb");
