@@ -38,6 +38,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "cross_file",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.3+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.0.5",
       "packageUri": "lib/",
@@ -62,6 +68,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.13",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_spinkit",
       "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_spinkit-5.1.0",
       "packageUri": "lib/",
@@ -80,6 +92,90 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "google_ml_kit",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_ml_kit-0.14.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "google_mlkit_barcode_scanning",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_barcode_scanning-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_commons",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_commons-0.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_digital_ink_recognition",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_digital_ink_recognition-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_entity_extraction",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_entity_extraction-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_face_detection",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_face_detection-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_image_labeling",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_image_labeling-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_language_id",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_language_id-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_object_detection",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_object_detection-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_pose_detection",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_pose_detection-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_selfie_segmentation",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_selfie_segmentation-0.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_smart_reply",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_smart_reply-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_text_recognition",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_text_recognition-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "google_mlkit_translation",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/google_mlkit_translation-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "http",
       "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/http-0.13.5",
       "packageUri": "lib/",
@@ -88,6 +184,36 @@
     {
       "name": "http_parser",
       "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "image_picker",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker-0.8.7+4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_android",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.6+10",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_for_web",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_for_web-2.1.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "image_picker_ios",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_ios-0.8.7+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "image_picker_platform_interface",
+      "rootUri": "file:///C:/Users/Riddhish/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_platform_interface-2.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -236,7 +362,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-04-29T13:45:27.834324Z",
+  "generated": "2023-04-29T20:26:11.648508Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
