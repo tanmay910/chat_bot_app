@@ -97,8 +97,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 30),
                     const ButtonGlobal(
-                      labelText: 'Login',
-                    ),
+                        // labelText: 'Login',
+                        ),
                     const SizedBox(height: 20),
                     Container(
                       alignment: Alignment.center,
