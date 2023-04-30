@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "363151548486",
+    "project_id": "fir-auth-c45a6",
+    "storage_bucket": "fir-auth-c45a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363151548486:android:9a826162df3154349caa47",
+        "android_client_info": {
+          "package_name": "com.example.chatgpt_course"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363151548486-3gdef3lldjjd5s4jvlhkm6kojd0liod7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABW0u3ET6FVhTD_bSgveLkP62FNoNO0NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363151548486-3gdef3lldjjd5s4jvlhkm6kojd0liod7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
