@@ -1,5 +1,6 @@
 import 'dart:developer';
-
+import 'package:chatgpt_course/screens/text_recongnistation.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:chatgpt_course/constants/constants.dart';
 import 'package:chatgpt_course/providers/chats_provider.dart';
 import 'package:chatgpt_course/services/services.dart';
@@ -21,10 +22,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool _isTyping = false;
-
+  bool _isListening = false;
   late TextEditingController textEditingController;
   late ScrollController _listScrollController;
   late FocusNode focusNode;
+  final speech = stt.SpeechToText();
+  double _buttonSize = 50.0;
+  double _borderRadius = 25.0;
+
   @override
   void initState() {
     _listScrollController = ScrollController();
@@ -55,6 +60,9 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         title: const Text("ChatGPT"),
         actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> MyHomePage()));
+          }, icon: Icon(Icons.add)),
           IconButton(
             onPressed: () async {
               await Services.showModalSheet(context: context);
@@ -110,6 +118,47 @@ class _ChatScreenState extends State<ChatScreen> {
                             hintText: "How can I help you",
                             hintStyle: TextStyle(color: Colors.grey)),
                       ),
+                    ),
+                    GestureDetector(
+                        onTapUp: (details) {
+                          speech.stop();
+                          setState(() {
+                            _isListening = false;
+                            _buttonSize = 50.0;
+                            _borderRadius = 25.0;
+                          });
+                        },
+                        onTapDown: (details) async {
+                          final isAvailable = await speech.initialize();
+                          if (isAvailable) {
+                            setState(() {
+                              _isListening = true;
+                                _buttonSize = 60.0;
+                                _borderRadius = 30.0;
+
+                            });
+                            await speech.listen(
+                              onResult: (result) {
+                                textEditingController.text =
+                                    result.recognizedWords;
+                              },
+                            );
+                          }
+                        },
+                        //  child:  Icon(Icons.mic,color: _isListening ? Colors.blue : Colors.white,)
+                        child:  AnimatedContainer(
+                          duration: Duration(milliseconds: 150),
+                          width: _buttonSize,
+                          height: _buttonSize,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(_borderRadius),
+                          ),
+                          child: Icon(_isListening? Icons.mic:Icons.mic_none_rounded,color: Colors.black,),
+                        ),),
+
+                    SizedBox(
+                      width: 10,
                     ),
                     IconButton(
                         onPressed: () async {
