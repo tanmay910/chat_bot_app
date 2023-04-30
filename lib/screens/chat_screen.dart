@@ -29,6 +29,16 @@ class _ChatScreenState extends State<ChatScreen> {
   final speech = stt.SpeechToText();
   double _buttonSize = 50.0;
   double _borderRadius = 25.0;
+  final ScrollController _controller = ScrollController();
+
+// This is what you're looking for!
+  void _scrollDown() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(seconds: 2),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
 
   @override
   void initState() {
@@ -46,31 +56,33 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  // List<ChatModel> chatList = [];
   @override
   Widget build(BuildContext context) {
     final modelsProvider = Provider.of<ModelsProvider>(context);
     final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(AssetsManager.openaiLogo),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(),
         ),
-        title: const Text("ChatGPT"),
+        elevation: 5,
+        backgroundColor: scaffoldBackgroundColor,
+        shadowColor: Color(0xffcdf0fb),
+        leading: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/sharingan.png')),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: const Text(
+            "ChatGPT",
+            style: TextStyle(color: Color(0xffcdf0fb)),
+          ),
+        ),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TextRecognition()));
-              },
-              icon: Icon(Icons.add)),
           IconButton(
             onPressed: () async {
               await Services.showModalSheet(context: context);
             },
-            icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+            icon: const Icon(Icons.more_vert_rounded, color: Color(0xffcdf0fb)),
           ),
         ],
       ),
@@ -79,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Flexible(
               child: ListView.builder(
-                  controller: _listScrollController,
+                  controller: _controller,
                   itemCount: chatProvider.getChatList.length, //chatList.length,
                   itemBuilder: (context, index) {
                     return ChatWidget(
@@ -94,93 +106,98 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             if (_isTyping) ...[
               const SpinKitThreeBounce(
-                color: Colors.white,
+                color: Color(0xffcdf0fb),
                 size: 18,
               ),
             ],
-            const SizedBox(
-              height: 15,
-            ),
-            Material(
-              color: cardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        focusNode: focusNode,
-                        style: const TextStyle(color: Colors.white),
-                        controller: textEditingController,
-                        onSubmitted: (value) async {
-                          await sendMessageFCT(
-                              modelsProvider: modelsProvider,
-                              chatProvider: chatProvider);
-                        },
-                        decoration: const InputDecoration.collapsed(
-                            hintText: "How can I help you",
-                            hintStyle: TextStyle(color: Colors.grey)),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTapUp: (details) {
-                        speech.stop();
-                        setState(() {
-                          _isListening = false;
-                          _buttonSize = 50.0;
-                          _borderRadius = 25.0;
-                        });
-                      },
-                      onTapDown: (details) async {
-                        final isAvailable = await speech.initialize();
-                        if (isAvailable) {
-                          setState(() {
-                            _isListening = true;
-                            _buttonSize = 60.0;
-                            _borderRadius = 30.0;
-                          });
-                          await speech.listen(
-                            onResult: (result) {
-                              textEditingController.text =
-                                  result.recognizedWords;
-                            },
-                          );
-                        }
-                      },
-                      //  child:  Icon(Icons.mic,color: _isListening ? Colors.blue : Colors.white,)
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 150),
-                        width: _buttonSize,
-                        height: _buttonSize,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(_borderRadius),
-                        ),
-                        child: Icon(
-                          _isListening ? Icons.mic : Icons.mic_none_rounded,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          await sendMessageFCT(
-                              modelsProvider: modelsProvider,
-                              chatProvider: chatProvider);
-                        },
-                        icon: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ))
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: Material(
+        elevation: 10,
+        shadowColor: Color(0xffcdf0fb),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            side: BorderSide(color: Color(0xffcdf0fb), width: 1)),
+        color: scaffoldBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: TextField(
+                  focusNode: focusNode,
+                  style: const TextStyle(color: Color(0xffcdf0fb)),
+                  controller: textEditingController,
+                  onSubmitted: (value) async {
+                    await sendMessageFCT(
+                        modelsProvider: modelsProvider,
+                        chatProvider: chatProvider);
+                  },
+                  decoration: const InputDecoration.collapsed(
+                      hintText: "How can I help you",
+                      hintStyle: TextStyle(color: Color(0xffcdf0fb))),
+                ),
+              ),
+              GestureDetector(
+                  onTapUp: (details) {
+                    speech.stop();
+                    setState(() {
+                      _isListening = false;
+                    });
+                  },
+                  onTapDown: (details) async {
+                    final isAvailable = await speech.initialize();
+                    if (isAvailable) {
+                      setState(() {
+                        _isListening = true;
+                      });
+                      await speech.listen(
+                        onResult: (result) {
+                          textEditingController.text = result.recognizedWords;
+                        },
+                      );
+                    }
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(
+                        Icons.mic,
+                        color: _isListening ? Colors.blue : Color(0xffcdf0fb),
+                      ),
+                      if (_isListening)
+                        CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                    ],
+                  )),
+              SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                  onPressed: () async {
+                    await sendMessageFCT(
+                        modelsProvider: modelsProvider,
+                        chatProvider: chatProvider);
+                  },
+                  icon: const Icon(
+                    Icons.send,
+                    color: Color(0xffcdf0fb),
+                  )),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _scrollDown,
+        child: Icon(Icons.arrow_downward),
+        backgroundColor: Color(0xffcdf0fb),
+        foregroundColor: Color(0xff161621),
       ),
     );
   }
@@ -188,7 +205,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void scrollListToEND() {
     _listScrollController.animateTo(
         _listScrollController.position.maxScrollExtent,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 1),
         curve: Curves.easeOut);
   }
 

@@ -22,17 +22,6 @@ class ImagesProvider with ChangeNotifier {
         n: 1,
         size: '1024x1024'
       ));
-    // if (chosenModelId.toLowerCase().startsWith("gpt")) {
-    //   chatList.addAll(await ApiService.sendMessageGPT(
-    //     message: msg,
-    //     modelId: chosenModelId,
-    //   ));
-    // } else {
-    //   chatList.addAll(await ApiService.sendMessage(
-    //     message: msg,
-    //     modelId: chosenModelId,
-    //   ));
-    // }
     notifyListeners();
   }
 }
