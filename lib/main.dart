@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 
 import 'constants/constants.dart';
 import 'providers/chats_provider.dart';
-import 'screens/chat_screen.dart';
+import 'providers/images_provider.dart';
+import './screens/chat_screen.dart';
+import './screens/text_image_tabs_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +26,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ChatProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ImagesProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter ChatBOT',
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
               color: cardColor,
             )),
-        home: const ChatScreen(),
+        home: TextImageTabsScreen(),
       ),
     );
   }
