@@ -98,6 +98,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///home/sourishjoshi/.pub-cache/hosted/pub.dev/flutter_tts-3.6.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///home/sourishjoshi/Development/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
@@ -422,7 +428,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-04-30T20:00:24.832764Z",
+  "generated": "2023-04-30T20:05:06.835039Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }

@@ -59,15 +59,12 @@ class ApiService {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(
@@ -83,7 +80,6 @@ class ApiService {
     }
   }
 
-  // Send Message fct
   static Future<List<ChatModel>> sendMessage(
       {required String message, required String modelId}) async {
     try {
@@ -103,16 +99,12 @@ class ApiService {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
-
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(
@@ -128,14 +120,12 @@ class ApiService {
     }
   }
 
-  // sends message prompt and receives an image
   static Future<List<ImageModel>> sendImagePromptAndGetImage({
     required String message,
     required int n,
     required String size,
   }) async {
     try {
-      // log("modelId $modelId");
       print('in the api service trying to send prompt');
       var response = await http.post(
         Uri.parse("$BASE_URL/images/generations"),
@@ -153,20 +143,11 @@ class ApiService {
       );
       print('sent the prompt');
 
-      // Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       print(jsonResponse);
-/*
-      
-      if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
-        throw HttpException(jsonResponse['error']["message"]);
-      }
-*/
       List<ImageModel> chatList = [];
 
       if (jsonResponse["data"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["data"].length,
           (index) => ImageModel(

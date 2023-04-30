@@ -45,30 +45,33 @@ class _ChatScreenState extends State<ChatScreen> {
     focusNode.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final modelsProvider = Provider.of<ModelsProvider>(context);
     final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(AssetsManager.openaiLogo),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
         ),
-        title: const Text("ChatGPT"),
+        elevation: 5,
+        backgroundColor: scaffoldBackgroundColor,
+        shadowColor: Color(0xffcdf0fb),
+        leading: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/sharingan.png')),
+        title: const Text(
+          "ChatGPT",
+          style: TextStyle(color: Color(0xffcdf0fb)),
+        ),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TextRecognition()));
-              },
-              icon: Icon(Icons.add)),
           IconButton(
             onPressed: () async {
               await Services.showModalSheet(context: context);
             },
-            icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+            icon: const Icon(Icons.more_vert_rounded, color: Color(0xffcdf0fb)),
           ),
         ],
       ),
@@ -78,13 +81,13 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                   controller: _listScrollController,
-                  itemCount: chatProvider.getChatList.length,
+                  itemCount: chatProvider.getChatList.length, //chatList.length,
                   itemBuilder: (context, index) {
                     return ChatWidget(
                       msg: chatProvider
-                          .getChatList[index].msg, 
+                          .getChatList[index].msg, // chatList[index].msg,
                       chatIndex: chatProvider.getChatList[index]
-                          .chatIndex,
+                          .chatIndex, //chatList[index].chatIndex,
                       shouldAnimate:
                           chatProvider.getChatList.length - 1 == index,
                     );
@@ -92,23 +95,28 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             if (_isTyping) ...[
               const SpinKitThreeBounce(
-                color: Colors.white,
+                color: Color(0xffcdf0fb),
                 size: 18,
               ),
             ],
-            const SizedBox(
-              height: 15,
-            ),
             Material(
-              color: cardColor,
+              elevation: 10,
+              shadowColor: Color(0xffcdf0fb),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  side: BorderSide(color: Color(0xffcdf0fb), width: 1)),
+              color: scaffoldBackgroundColor,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child: Row(
                   children: [
+                    SizedBox(
+                      width: 5,
+                    ),
                     Expanded(
                       child: TextField(
                         focusNode: focusNode,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Color(0xff161621)),
                         controller: textEditingController,
                         onSubmitted: (value) async {
                           await sendMessageFCT(
@@ -117,49 +125,47 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         decoration: const InputDecoration.collapsed(
                             hintText: "How can I help you",
-                            hintStyle: TextStyle(color: Colors.grey)),
+                            hintStyle: TextStyle(color: Color(0xffcdf0fb))),
                       ),
                     ),
                     GestureDetector(
-                      onTapUp: (details) {
-                        speech.stop();
-                        setState(() {
-                          _isListening = false;
-                          _buttonSize = 50.0;
-                          _borderRadius = 25.0;
-                        });
-                      },
-                      onTapDown: (details) async {
-                        final isAvailable = await speech.initialize();
-                        if (isAvailable) {
+                        onTapUp: (details) {
+                          speech.stop();
                           setState(() {
-                            _isListening = true;
-                            _buttonSize = 60.0;
-                            _borderRadius = 30.0;
+                            _isListening = false;
                           });
-                          await speech.listen(
-                            onResult: (result) {
-                              textEditingController.text =
-                                  result.recognizedWords;
-                            },
-                          );
-                        }
-                      },
-                      //  child:  Icon(Icons.mic,color: _isListening ? Colors.blue : Colors.white,)
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 150),
-                        width: _buttonSize,
-                        height: _buttonSize,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(_borderRadius),
-                        ),
-                        child: Icon(
-                          _isListening ? Icons.mic : Icons.mic_none_rounded,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+                        },
+                        onTapDown: (details) async {
+                          final isAvailable = await speech.initialize();
+                          if (isAvailable) {
+                            setState(() {
+                              _isListening = true;
+                            });
+                            await speech.listen(
+                              onResult: (result) {
+                                textEditingController.text =
+                                    result.recognizedWords;
+                              },
+                            );
+                          }
+                        },
+                        //  child:  Icon(Icons.mic,color: _isListening ? Colors.blue : Colors.white,)
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.mic,
+                              color: _isListening
+                                  ? Colors.blue
+                                  : Color(0xffcdf0fb),
+                            ),
+                            if (_isListening)
+                              CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.blue),
+                              ),
+                          ],
+                        )),
                     SizedBox(
                       width: 10,
                     ),
@@ -171,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         icon: const Icon(
                           Icons.send,
-                          color: Colors.white,
+                          color: Color(0xffcdf0fb),
                         ))
                   ],
                 ),
