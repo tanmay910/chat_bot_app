@@ -58,14 +58,14 @@ class _ImageScreenState extends State<ImageScreen> {
           child: Image.asset(AssetsManager.openaiLogo),
         ),
         title: const Text("ChatGPT"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await Services.showModalSheet(context: context);
-            },
-            icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () async {
+        //       await Services.showModalSheet(context: context);
+        //     },
+        //     icon: const Icon(Icons.more_vert_rounded, color: Colors.white),
+        //   ),
+        // ],
       ),
       body: SafeArea(
         child: Column(
@@ -118,15 +118,23 @@ class _ImageScreenState extends State<ImageScreen> {
                       ),
                     ),
                     IconButton(
-                        onPressed: () async {
-                          await sendPrompt(
-                            imagesProvider: imagesProvider,
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ))
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.file_upload_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await sendPrompt(
+                          imagesProvider: imagesProvider,
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -200,60 +208,32 @@ class _ImageScreenState extends State<ImageScreen> {
     }
   }
 
-  Future<void> sendMessageFCT(
-      {required ModelsProvider modelsProvider,
-      required ChatProvider chatProvider}) async {
-    if (_isTyping) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: TextWidget(
-            label: "You cant send multiple messages at a time",
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    if (textEditingController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: TextWidget(
-            label: "Please type a message",
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    try {
-      String msg = textEditingController.text;
-      setState(() {
-        _isTyping = true;
-        // chatList.add(ChatModel(msg: textEditingController.text, chatIndex: 0));
-        chatProvider.addUserMessage(msg: msg);
-        textEditingController.clear();
-        focusNode.unfocus();
-      });
-      await chatProvider.sendMessageAndGetAnswers(
-          msg: msg, chosenModelId: modelsProvider.getCurrentModel);
-      // chatList.addAll(await ApiService.sendMessage(
-      //   message: textEditingController.text,
-      //   modelId: modelsProvider.getCurrentModel,
-      // ));
-      setState(() {});
-    } catch (error) {
-      log("error $error");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: TextWidget(
-          label: error.toString(),
-        ),
-        backgroundColor: Colors.red,
-      ));
-    } finally {
-      setState(() {
-        scrollListToEND();
-        _isTyping = false;
-      });
-    }
+  void showBottomImageNumber() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          String dropdownValue = '1';
+          return DropdownButton<String>(
+            // Step 3.
+            value: dropdownValue,
+            // Step 4.
+            items: <String>['1', '2', '3', '4']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: 30),
+                ),
+              );
+            }).toList(),
+            // Step 5.
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownValue = newValue!;
+              });
+            },
+          );
+        });
   }
 }
