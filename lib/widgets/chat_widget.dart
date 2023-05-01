@@ -2,6 +2,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt_course/constants/constants.dart';
 import 'package:chatgpt_course/services/assets_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'text_widget.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -30,7 +32,7 @@ class ChatWidget extends StatelessWidget {
             color: chatIndex == 0 ? cardColor : scaffoldBackgroundColor,
             child: Container(
               padding: EdgeInsets.all(8.0),
-              width: MediaQuery.of(context).size.width * 4 / 5,
+              width: MediaQuery.of(context).size.width * 8 / 9,
               child: Column(
                 children: [
                   Row(
@@ -57,6 +59,7 @@ class ChatWidget extends StatelessWidget {
                                 label: msg,
                               )
                             : shouldAnimate
+
                                 ? DefaultTextStyle(
                                     style: const TextStyle(
                                         color: Color(0xffcdf0fb),
@@ -95,7 +98,64 @@ class ChatWidget extends StatelessWidget {
                           Icons.mic,
                           color: Color(0xffcdf0fb),
                         ),
-                      )
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await Share.share(msg);
+                        },
+                        child: Icon(
+                          Icons.share,
+                          color: Color(0xffcdf0fb),
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: msg));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Copied to clipboard'),
+                              backgroundColor: Colors.black,
+                              duration: const Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              action: SnackBarAction(
+                                textColor: Colors.blue,
+                                label: 'Undo',
+                                onPressed: () {
+                                  // Undo logic here
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        child: Icon(
+                          Icons.copy,
+                          color: Color(0xffcdf0fb),
+                        ),
+                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     Clipboard.setData(ClipboardData(text: msg));
+                      //     ScaffoldMessenger.of(context).showSnackBar(
+                      //       SnackBar(
+                      //         content: const Text('Copied to clipboard'),
+                      //         backgroundColor: Colors.white,
+                      //         duration: const Duration(seconds: 3),
+                      //         behavior: SnackBarBehavior.floating,
+                      //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      //         action: SnackBarAction(
+                      //           textColor: Colors.blue,
+                      //           label: 'Undo',
+                      //           onPressed: () {
+                      //             // Undo logic here
+                      //           },
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      //   icon: const Icon(Icons.copy,color: Color(0xffcdf0fb),),
+                      // ),
                     ],
                   ),
                 ],

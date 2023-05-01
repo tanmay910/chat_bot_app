@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -10,117 +12,177 @@ class TextRecognition extends StatefulWidget {
   State<TextRecognition> createState() => _TextRecognitionState();
 }
 
-class _TextRecognitionState extends State<TextRecognition> {
+class _TextRecognitionState extends State<TextRecognition>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   bool textScanning = false;
-
   XFile? imageFile;
-
   String scannedText = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Text Recognition example"),
-      ),
+
       body: Center(
           child: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (textScanning) const CircularProgressIndicator(),
-                if (!textScanning && imageFile == null)
-                  Container(
-                    width: 300,
-                    height: 300,
-                    color: Colors.grey[300]!,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[300]!,
+                    ),
                   ),
-                if (imageFile != null) Image.file(File(imageFile!.path)),
+                  height: 200.0,
+                  width: double.infinity,
+                  child: Stack(
+                    children: [
+                      if (imageFile != null)
+                        Image.file(
+                          File(imageFile!.path),
+                          fit: BoxFit.cover,
+                        ),
+                      if (textScanning)
+                        Center(
+                          child: SizedBox(
+                            width: 32.0,
+                            height: 32.0,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2.0,
+                              valueColor: _animation.drive(
+                                ColorTween(
+                                  begin: Colors.grey[300]!,
+                                  end: Colors.grey[500]!,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            getImage(ImageSource.gallery);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.image,
-                                  size: 30,
-                                ),
-                                Text(
-                                  "Gallery",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            getImage(ImageSource.camera);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.camera_alt,
-                                  size: 30,
-                                ),
-                                Text(
-                                  "Camera",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        getImage(ImageSource.gallery);
+                      },
+                      icon: const Icon(Icons.image),
+                      label: const Text("Gallery"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.grey[200],
+                        onPrimary: Colors.grey[800],
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        getImage(ImageSource.camera);
+                      },
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text("Camera"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.grey[200],
+                        onPrimary: Colors.grey[800],
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  child: Text(
-                    scannedText,
-                    style: TextStyle(fontSize: 20),
+                if (scannedText.isNotEmpty) ...[
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(text: scannedText));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Copied to clipboard'),
+                                    backgroundColor: Colors.black,
+                                    duration: const Duration(seconds: 3),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    action: SnackBarAction(
+                                      textColor: Colors.blue,
+                                      label: 'Undo',
+                                      onPressed: () {
+                                        // Undo logic here
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.copy),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  minHeight: 50, // minimum height of the TextField
+                                ),
+                                child: TextField(
+                                  readOnly: false, // disable editing
+                                  controller: TextEditingController(text: scannedText),
+                                  style: const TextStyle(fontSize: 20, color: Colors.black),
+                                  maxLines: null, // allow multiple lines
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ],
               ],
             )),
       )),
@@ -158,10 +220,5 @@ class _TextRecognitionState extends State<TextRecognition> {
     }
     textScanning = false;
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 }

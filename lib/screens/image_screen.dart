@@ -72,12 +72,15 @@ class _ImageScreenState extends State<ImageScreen> {
         elevation: 5,
         backgroundColor: scaffoldBackgroundColor,
         shadowColor: Color(0xffcdf0fb),
-        leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/sharingan.png')),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/sharingan.png')),
+        ),
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: const Text(
-            "ChatGPT",
+            "CyberSphere",
             style: TextStyle(color: Color(0xffcdf0fb)),
           ),
         ),
@@ -122,46 +125,54 @@ class _ImageScreenState extends State<ImageScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Material(
-        color: cardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  focusNode: focusNode,
-                  style: const TextStyle(color: Colors.white),
-                  controller: textEditingController,
-                  onSubmitted: (value) async {
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Material(
+          elevation: 10,
+          shadowColor: Color(0xffcdf0fb),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              side: BorderSide(color: Color(0xffcdf0fb), width: 1)),
+          color: scaffoldBackgroundColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    focusNode: focusNode,
+                    style: const TextStyle(color: Colors.white),
+                    controller: textEditingController,
+                    onSubmitted: (value) async {
+                      await sendPrompt(
+                        imagesProvider: imagesProvider,
+                      );
+                    },
+                    decoration: const InputDecoration.collapsed(
+                        hintText: "How can I help you",
+                        hintStyle: TextStyle(color: Colors.grey)),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.file_upload_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
                     await sendPrompt(
                       imagesProvider: imagesProvider,
                     );
                   },
-                  decoration: const InputDecoration.collapsed(
-                      hintText: "How can I help you",
-                      hintStyle: TextStyle(color: Colors.grey)),
+                  icon: const Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.file_upload_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  await sendPrompt(
-                    imagesProvider: imagesProvider,
-                  );
-                },
-                icon: const Icon(
-                  Icons.send,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

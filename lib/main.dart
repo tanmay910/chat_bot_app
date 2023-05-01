@@ -1,5 +1,6 @@
 import 'package:chatgpt_course/providers/models_provider.dart';
 import 'package:chatgpt_course/screens/home_screen.dart';
+import 'package:chatgpt_course/screens/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
               color: cardColor,
             )),
-        home: SignInPage(),
+        home: Splash(),
       ),
     );
   }

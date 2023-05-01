@@ -68,12 +68,15 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 5,
         backgroundColor: scaffoldBackgroundColor,
         shadowColor: Color(0xffcdf0fb),
-        leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/sharingan.png')),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/sharingan.png')),
+        ),
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: const Text(
-            "ChatGPT",
+            "CyberSphere",
             style: TextStyle(color: Color(0xffcdf0fb)),
           ),
         ),
@@ -113,83 +116,88 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Material(
-        elevation: 10,
-        shadowColor: Color(0xffcdf0fb),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            side: BorderSide(color: Color(0xffcdf0fb), width: 1)),
-        color: scaffoldBackgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 5,
-              ),
-              Expanded(
-                child: TextField(
-                  focusNode: focusNode,
-                  style: const TextStyle(color: Color(0xffcdf0fb)),
-                  controller: textEditingController,
-                  onSubmitted: (value) async {
-                    await sendMessageFCT(
-                        modelsProvider: modelsProvider,
-                        chatProvider: chatProvider);
-                  },
-                  decoration: const InputDecoration.collapsed(
-                      hintText: "How can I help you",
-                      hintStyle: TextStyle(color: Color(0xffcdf0fb))),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Material(
+
+          elevation: 10,
+          shadowColor: Color(0xffcdf0fb),
+          shape: RoundedRectangleBorder(
+
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              side: BorderSide(color: Color(0xffcdf0fb), width: 1)),
+          color: scaffoldBackgroundColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 5,
                 ),
-              ),
-              GestureDetector(
-                  onTapUp: (details) {
-                    speech.stop();
-                    setState(() {
-                      _isListening = false;
-                    });
-                  },
-                  onTapDown: (details) async {
-                    final isAvailable = await speech.initialize();
-                    if (isAvailable) {
+                Expanded(
+                  child: TextField(
+                    focusNode: focusNode,
+                    style: const TextStyle(color: Color(0xffcdf0fb)),
+                    controller: textEditingController,
+                    onSubmitted: (value) async {
+                      await sendMessageFCT(
+                          modelsProvider: modelsProvider,
+                          chatProvider: chatProvider);
+                    },
+                    decoration: const InputDecoration.collapsed(
+                        hintText: "How can I help you",
+                        hintStyle: TextStyle(color: Color(0xffcdf0fb))),
+                  ),
+                ),
+                GestureDetector(
+                    onTapUp: (details) {
+                      speech.stop();
                       setState(() {
-                        _isListening = true;
+                        _isListening = false;
                       });
-                      await speech.listen(
-                        onResult: (result) {
-                          textEditingController.text = result.recognizedWords;
-                        },
-                      );
-                    }
-                  },
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(
-                        Icons.mic,
-                        color: _isListening ? Colors.blue : Color(0xffcdf0fb),
-                      ),
-                      if (_isListening)
-                        CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                    },
+                    onTapDown: (details) async {
+                      final isAvailable = await speech.initialize();
+                      if (isAvailable) {
+                        setState(() {
+                          _isListening = true;
+                        });
+                        await speech.listen(
+                          onResult: (result) {
+                            textEditingController.text = result.recognizedWords;
+                          },
+                        );
+                      }
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          Icons.mic,
+                          color: _isListening ? Colors.blue : Color(0xffcdf0fb),
                         ),
-                    ],
-                  )),
-              SizedBox(
-                width: 10,
-              ),
-              IconButton(
-                  onPressed: () async {
-                    await sendMessageFCT(
-                        modelsProvider: modelsProvider,
-                        chatProvider: chatProvider);
-                  },
-                  icon: const Icon(
-                    Icons.send,
-                    color: Color(0xffcdf0fb),
-                  )),
-            ],
+                        if (_isListening)
+                          CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.blue),
+                          ),
+                      ],
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                    onPressed: () async {
+                      await sendMessageFCT(
+                          modelsProvider: modelsProvider,
+                          chatProvider: chatProvider);
+                    },
+                    icon: const Icon(
+                      Icons.send,
+                      color: Color(0xffcdf0fb),
+                    )),
+              ],
+            ),
           ),
         ),
       ),

@@ -18,7 +18,7 @@ class SocialLogin extends StatelessWidget {
                   alignment: Alignment.center,
                   height: 55,
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xffcdf0fb),
                       borderRadius: BorderRadius.circular(6),
                       boxShadow: [
                         BoxShadow(
@@ -38,7 +38,7 @@ class SocialLogin extends StatelessWidget {
                 alignment: Alignment.center,
                 height: 55,
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xffcdf0fb),
                     borderRadius: BorderRadius.circular(6),
                     boxShadow: [
                       BoxShadow(
@@ -57,7 +57,7 @@ class SocialLogin extends StatelessWidget {
                 alignment: Alignment.center,
                 height: 55,
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xffcdf0fb),
                     borderRadius: BorderRadius.circular(6),
                     boxShadow: [
                       BoxShadow(

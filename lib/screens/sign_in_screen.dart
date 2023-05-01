@@ -1,5 +1,6 @@
 import 'package:chatgpt_course/screens/home_screen.dart';
 import 'package:chatgpt_course/screens/sign_up_screen.dart';
+import 'package:chatgpt_course/screens/top_tabs_screen.dart';
 import 'package:chatgpt_course/utils/global.colors.dart';
 import 'package:chatgpt_course/widgets/button.global.dart';
 import 'package:chatgpt_course/widgets/social.login.dart';
@@ -47,7 +48,7 @@ class _SignInPageState extends State<SignInPage> {
                   _emailController.clear(),
                   _passwordController.clear(),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (ctx) => HomePage())),
+                      MaterialPageRoute(builder: (ctx) => TopTabsScreen())),
                 });
       } on FirebaseAuthException catch (error) {
         _formkey.currentState!.reset();
@@ -111,23 +112,25 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(
                     height: 100,
                   ),
-                  Text(
-                    'Logo',
-                    style: TextStyle(
-                      color: GlobalColors.mainColor,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  CircleAvatar(
+                    radius: 60,
+                      child: Image(image: AssetImage('assets/images/sharingan.png'),fit: BoxFit.cover,),
                   ),
+                  SizedBox(height: 20,),
+                  Text('CyberSphere',style: TextStyle(
+                    color: Color(0xffcdf0fb),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),),
                   const SizedBox(
-                    height: 100,
+                    height: 80,
                   ),
                   Column(
                     children: [
                       Text(
                         'Sign in to your account',
                         style: TextStyle(
-                          color: GlobalColors.textColor,
+                          color: Color(0xffcdf0fb),
                           fontSize: 22,
                           fontWeight: FontWeight.w500,
                         ),
@@ -150,9 +153,31 @@ class _SignInPageState extends State<SignInPage> {
                           decoration: const InputDecoration(
                             labelText: 'Email',
                             hintText: 'Enter your email',
+                            labelStyle: TextStyle(
+                              color: Colors.white, // Change color here
+                            ),
+                            hintStyle: TextStyle(
+                              color: Colors.white10, // Change color here
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xffcdf0fb), // change border color
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xffcdf0fb), // change focused border color
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white, // Change input text color here
+                          ),
+                          cursorColor: Colors.white,
+
                           ),
                         ),
-                      ),
+                      
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(6.0),
@@ -166,9 +191,30 @@ class _SignInPageState extends State<SignInPage> {
                           decoration: const InputDecoration(
                             labelText: 'Password',
                             hintText: 'Enter your password',
+                            labelStyle: TextStyle(
+                              color: Colors.white, // Change color here
+                            ),
+                            hintStyle: TextStyle(
+                              color: Colors.white10, // Change color here
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xffcdf0fb),                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xffcdf0fb),
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white, // Change input text color here
+                          ),
+                          cursorColor: Colors.white,
                           ),
                         ),
-                      ),
+
+
                       const SizedBox(height: 40),
                       InkWell(
                         onTap: () {
@@ -180,7 +226,7 @@ class _SignInPageState extends State<SignInPage> {
                           alignment: Alignment.center,
                           height: 55,
                           decoration: BoxDecoration(
-                            color: GlobalColors.mainColor,
+                            color: Color(0xffcdf0fb),
                             borderRadius: BorderRadius.circular(6),
                             boxShadow: [
                               BoxShadow(
@@ -196,7 +242,7 @@ class _SignInPageState extends State<SignInPage> {
                               : const Text(
                                   'Sign in',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Color(0xff161261),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -230,6 +276,7 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Text(
               'Don\'t have an account',
+              style: TextStyle(color: Color(0xffcdf0fb),),
             ),
             const SizedBox(
               width: 5,

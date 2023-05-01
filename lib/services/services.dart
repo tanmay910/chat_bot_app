@@ -24,6 +24,7 @@ class Services {
                   child: TextWidget(
                     label: "Chosen Model:",
                     fontSize: 16,
+                    color: Colors.white,
                   ),
                 ),
               
