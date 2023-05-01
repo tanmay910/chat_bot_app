@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chatgpt_course/screens/image_upload_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class ImageScreen extends StatefulWidget {
 
 class _ImageScreenState extends State<ImageScreen> {
   bool _isTyping = false;
+  int dropdownValue = 1;
 
   late TextEditingController textEditingController;
   late ScrollController _listScrollController;
@@ -42,6 +44,10 @@ class _ImageScreenState extends State<ImageScreen> {
     textEditingController.dispose();
     focusNode.dispose();
     super.dispose();
+  }
+
+  void changeImageQuantity(int value) {
+    dropdownValue = value;
   }
 
   // List<ChatModel> chatList = [];
@@ -117,8 +123,13 @@ class _ImageScreenState extends State<ImageScreen> {
                             hintStyle: TextStyle(color: Colors.grey)),
                       ),
                     ),
+                    // ImageQuantity(dropdownValue, changeImageQuantity),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // print(dropdownValue);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ImageUploadScreen()));
+                      },
                       icon: const Icon(
                         Icons.file_upload_outlined,
                         color: Colors.white,
@@ -208,32 +219,68 @@ class _ImageScreenState extends State<ImageScreen> {
     }
   }
 
-  void showBottomImageNumber() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          String dropdownValue = '1';
-          return DropdownButton<String>(
-            // Step 3.
-            value: dropdownValue,
-            // Step 4.
-            items: <String>['1', '2', '3', '4']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(fontSize: 30),
-                ),
-              );
-            }).toList(),
-            // Step 5.
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownValue = newValue!;
-              });
-            },
-          );
+  // void showBottomImageNumber() {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (context) {
+  //       int dropdownValue = 1;
+  //       return DropdownButton<int>(
+  //         // Step 3.
+  //         value: dropdownValue,
+  //         // Step 4.
+  //         items: <int>[1, 2, 3, 4].map<DropdownMenuItem<int>>((int value) {
+  //           return DropdownMenuItem<int>(
+  //             value: value,
+  //             child: Text(
+  //               value.toString(),
+  //               style: TextStyle(fontSize: 30),
+  //             ),
+  //           );
+  //         }).toList(),
+  //         // Step 5.
+  //         onChanged: (int? newValue) {
+  //           setState(() {
+  //             dropdownValue = newValue!;
+  //           });
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+}
+
+class ImageQuantity extends StatefulWidget {
+  int dropdownValue;
+  final Function changeDropDownValue;
+  ImageQuantity(this.dropdownValue, this.changeDropDownValue);
+
+  @override
+  State<ImageQuantity> createState() => _ImageQuantityState();
+}
+
+class _ImageQuantityState extends State<ImageQuantity> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<int>(
+      // Step 3.
+      value: widget.dropdownValue,
+      // Step 4.
+      items: <int>[1, 2, 3, 4].map<DropdownMenuItem<int>>((int value) {
+        return DropdownMenuItem<int>(
+          value: value,
+          child: Text(
+            value.toString(),
+            style: TextStyle(fontSize: 30),
+          ),
+        );
+      }).toList(),
+      // Step 5.
+      onChanged: (int? newValue) {
+        setState(() {
+          widget.dropdownValue = newValue!;
         });
+        widget.changeDropDownValue(newValue);
+      },
+    );
   }
 }
