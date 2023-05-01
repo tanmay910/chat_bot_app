@@ -2,6 +2,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt_course/constants/constants.dart';
 import 'package:chatgpt_course/services/assets_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image_downloader/image_downloader.dart';
 
 import 'text_widget.dart';
 
@@ -15,6 +19,7 @@ class ImageWidget extends StatelessWidget {
   final String msg;
   final int chatIndex;
   final bool shouldAnimate;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,11 +47,59 @@ class ImageWidget extends StatelessWidget {
                           label: msg,
                         )
                       : Container(
-                          child: Image.network(
-                            msg,
-                            fit: BoxFit.fitWidth,
+                          child: Column(
+                            children: [
+                              Image.network(
+                                msg,
+                                fit: BoxFit.fitWidth,
+                              ),
+                              IconButton(
+                                // onPressed: () async {
+                                //   final tempDir =
+                                //       await await GallerySaver.saveImage(msg,
+                                //           albumName: 'Flutter');
+
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //       const SnackBar(
+                                //           content:
+                                //               Text('Downloaded to Gallery')));
+                                // },
+                                onPressed: () => downloadImage(msg),
+                                icon: Icon(Icons.file_download_outlined),
+                              ),
+                            ],
                           ),
                         ),
+                  // : Container(
+                  //     child: Stack(
+                  //       children: [
+                  //         Container(
+                  //           child: Image.network(
+                  //             msg,
+                  //             fit: BoxFit.fitWidth,
+                  //           ),
+                  //         ),
+                  //         Column(
+                  //           children: [
+                  //             Row(
+                  //               children: [
+                  //                 const Spacer(),
+                  //                 IconButton(
+                  //                   onPressed: () async {
+                  //                     await GallerySaver.saveImage(msg,
+                  //                         albumName: 'Flutter');
+                  //                   },
+                  //                   icon:
+                  //                       Icon(Icons.file_download_outlined),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             const Spacer(),
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
                   // : shouldAnimate
                   //     ? DefaultTextStyle(
                   //         style: const TextStyle(
@@ -97,5 +150,28 @@ class ImageWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void downloadImage(String url) async {
+    Dio dio = Dio();
+    String fileName = url.substring(url.length - 15);
+    print(fileName);
+    String path = await _getFilePath(fileName);
+    print(path);
+
+    await dio.download(
+      url,
+      path,
+    );
+
+    // await GallerySaver.saveImage(url, albumName: 'Flutter');
+    // await GallerySaver.saveImage(url, toDcim: true, albumName: 'Flutter');
+    // ImageDownloader.downloadImage(url);
+  }
+
+  Future<String> _getFilePath(String filename) async {
+    // final dir = await getApplicationDocumentsDirectory();
+    // return "${dir.path}/$filename";
+    return "/storage/emulated/0/DCIM/temp/$filename";
   }
 }

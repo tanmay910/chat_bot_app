@@ -7,6 +7,7 @@ import 'package:chatgpt_course/models/chat_model.dart';
 import 'package:chatgpt_course/models/image_model.dart';
 import 'package:chatgpt_course/models/models_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class ApiService {
   static Future<List<ModelsModel>> getModels() async {
@@ -59,15 +60,12 @@ class ApiService {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(
@@ -83,7 +81,6 @@ class ApiService {
     }
   }
 
-  // Send Message fct
   static Future<List<ChatModel>> sendMessage(
       {required String message, required String modelId}) async {
     try {
@@ -103,16 +100,12 @@ class ApiService {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
-
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(
@@ -128,14 +121,12 @@ class ApiService {
     }
   }
 
-  // sends message prompt and receives an image
   static Future<List<ImageModel>> sendImagePromptAndGetImage({
     required String message,
     required int n,
     required String size,
   }) async {
     try {
-      // log("modelId $modelId");
       print('in the api service trying to send prompt');
       var response = await http.post(
         Uri.parse("$BASE_URL/images/generations"),
@@ -153,6 +144,50 @@ class ApiService {
       );
       print('sent the prompt');
 
+      Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      print(jsonResponse);
+      List<ImageModel> chatList = [];
+
+      if (jsonResponse["data"].length > 0) {
+        chatList = List.generate(
+          jsonResponse["data"].length,
+          (index) => ImageModel(
+            url: jsonResponse["data"][index]["url"],
+            imgIndex: 1,
+          ),
+        );
+      }
+
+      return chatList;
+    } catch (error) {
+      log("error $error");
+      rethrow;
+    }
+  }
+
+  // image upload and edit image
+  static Future<String> uploadImageAndGetImage({
+    required XFile? message,
+  }) async {
+    try {
+      // log("modelId $modelId");
+      print('in the api service trying to send prompt');
+      var response = await http.post(
+        Uri.parse("$BASE_URL/images/variations"),
+        headers: {
+          'Authorization': 'Bearer $API_KEY',
+          // "Content-Type": "application/json"
+        },
+        body: jsonEncode(
+          {
+            "prompt": message,
+            "n": 1,
+            "size": '1024x1024',
+          },
+        ),
+      );
+      print('sent the prompt');
+
       // Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       print(jsonResponse);
@@ -162,7 +197,6 @@ class ApiService {
         // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
-*/
       List<ImageModel> chatList = [];
 
       if (jsonResponse["data"].length > 0) {
@@ -175,8 +209,9 @@ class ApiService {
           ),
         );
       }
+*/
 
-      return chatList;
+      return jsonResponse['data'][0]['url'];
     } catch (error) {
       log("error $error");
       rethrow;

@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 import 'constants/constants.dart';
 import 'providers/chats_provider.dart';
-
-import 'screens/chat_screen.dart';
-import 'screens/sign_in_screen.dart';
-import 'screens/sign_up_screen.dart';
+import 'dart:collection';
+import './screens/chat_screen.dart';
+import './screens/sign_in_screen.dart';
+import './screens/sign_up_screen.dart';
 import 'providers/images_provider.dart';
 import './screens/text_image_tabs_screen.dart';
 import './screens/tabs_screen.dart';
@@ -23,8 +23,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
